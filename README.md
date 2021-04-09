@@ -1,4 +1,5 @@
 Confira o Qualis de um periódico
+
 AVISO:
 Essa extensão utiliza dados públicos do sistema Qualis Periódicos mas NÃO visa o substituir. Pelo contrário, é um recurso extra para aqueles que buscam uma API para estudos, pesquisas, e desenvolvimento de aplicações diversas que porventura necessitam do estrato de periódicos.
 
