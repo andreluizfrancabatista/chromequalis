@@ -1,0 +1,206 @@
+/*popup.css*/
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+div#container{
+  width: 350px;
+  text-align: center;
+}
+div#search, div#footer{
+  width: 100%;
+  background-color: #f8f8f8;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+div#footer{
+  margin-bottom: 20px;
+}
+p#qualisapisource{
+  width: 100%;
+  background-color: #f8f8f8;  
+  padding: 5px 0px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  text-align: center;
+}
+div#avisoQualis2019{
+  background-color: #ffd17a;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  padding: 0px;
+}
+.avisoIcon{
+  width: 5%;
+  float: left;
+  text-align: center;
+  padding: 0px;
+  margin: 0 auto;
+}
+.avisoText{
+  width: 80%;
+  float: left;
+  text-align: center;
+  padding: 5px 0px;
+}
+.fecharAviso{
+  text-align: center;
+  width: 10%;
+}
+#buttonClose{
+  color: #808080;
+  cursor: pointer;
+}
+#buttonClose:hover{
+  color: #000;
+}
+div#avisoMsgOnOff{
+  
+  width: 50%;
+  float: left;
+  text-align: left;
+  padding-left: 10px;
+}
+div#avisoMsgOnOff:hover{
+  cursor: pointer;
+}
+/*Links*/
+div#links-dropdown{
+  display: none;
+  width: 50%;
+  float: right;
+  text-align: right;
+  padding-right: 10px;
+  
+}
+div#dropdown-content{
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+/* Links inside the dropdown */
+#dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 160px;
+}
+#links-dropdown:hover #dropdown-content {
+  display: block;
+}
+#dropdown-content a:hover{
+  background-color: #fdfefe;
+}
+/*end of links*/
+
+div#content{
+  width: 100%;
+  padding: 20px 10px 10px 10px;
+}
+/*table, tr, td, th{
+  border-collapse: collapse;
+  border: 1px solid black;
+}*/
+table{
+  margin-top: 20px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+th{
+  background-color: #2980b9;
+  color: #fff;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+th.colunaEstrato{
+  width: 20%;
+}
+tr:nth-child(even) { /*ímpar*/
+  background-color: #fdfefe;
+}
+tr:nth-child(odd) { /*par*/
+  background-color: #f4f6f6;
+}
+/*CSS da extensão do Google Acadêmico*/
+#search-box:hover {
+  border: 1px solid #b9b9b9;
+  border-top: 1px solid #a0a0a0;
+  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, .1);
+}
+#search-box {
+  vertical-align: top;
+  box-sizing: border-box;
+  width: 80%;
+  height: 30px;
+  color: black;
+  background: white;
+  font-size: 16px;
+  line-height: normal;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  padding: 3px 8px 1px 8px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border-radius: 2px 0 0 2px;
+  text-align: center;
+}
+#search-button:active {
+  border: 1px solid #315da3;
+  background-color: #2f6de1;
+  background-image: linear-gradient(to bottom, #4d90fe, #2f6de1);
+}
+#search-button:hover {
+  border: 1px solid #2f5bb7;
+  background-color: #357ae8;
+  background-image: linear-gradient(to bottom, #4d90fe, #357ae8);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, .1);
+  transition: all 0s;
+}
+#search-button {
+  text-align: center;
+  box-sizing: border-box;
+  padding: 3px 7px;
+  width: 37px;
+  height: 30px;
+  border: 1px solid #3079ed;
+  border-radius: 0 2px 2px 0;
+  background-color: #4d90fe;
+  background-image: linear-gradient(to bottom, #4d90fe, #4787ed);
+  transition: all .218s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  color: #f2f2f2;
+}
+/*End CSS extensão Google Academico*/
+
+@keyframes bubble {
+  0%   { transform:scale(0.5); opacity:0.0; }
+  50%  { transform:scale(1.2); opacity:0.5; }
+  100% { transform:scale(1.0); opacity:1.0; }
+}
+
+@keyframes rotates {
+  0%   { transform:rotate(45deg); opacity:0.0; }
+  /*50%  { transform:rotate(20deg); opacity:0.5; }*/
+  100% { transform:rotate(0deg); opacity:1.0; }
+}
+
+img#logoQualis{
+  animation-name: bubble;
+  animation-duration: 2.0s;
+  animation-fill-mode: forwards;
+}
+

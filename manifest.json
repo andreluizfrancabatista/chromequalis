@@ -1,0 +1,25 @@
+{
+  "name": "ChromeQualis",
+  "version": "2.4",
+  "description": "Confira o Qualis de um periódico",
+  "author": "André Luiz França Batista",
+  "icons": {
+    "16": "images/16_ico_qualis_icon.png",
+    "48": "images/48_ico_qualis_icon.png",
+    "128": "images/128_ico_qualis_icon.png"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "storage"
+  ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+  "manifest_version": 2
+}
