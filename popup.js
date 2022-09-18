@@ -5,7 +5,7 @@
 /**
  * Add your Analytics tracking ID here.
  */
-var _AnalyticsCode = 'UA-129511160-3';
+//var _AnalyticsCode = 'UA-129511160-3';
 /**
  * Below is a modified version of the Google Analytics asynchronous tracking
  * code snippet.  It has been modified to pull the HTTPS version of ga.js
@@ -13,26 +13,26 @@ var _AnalyticsCode = 'UA-129511160-3';
  * snippet instead of the standard tracking snippet provided when setting up
  * a Google Analytics account.
  */
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', _AnalyticsCode]);
-_gaq.push(['_trackPageview']);
-(function () {
-  var ga = document.createElement('script');
-  ga.type = 'text/javascript';
-  ga.async = true;
-  ga.src = 'https://ssl.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0];
-  s.parentNode.insertBefore(ga, s);
-})();
+// var _gaq = _gaq || [];
+// _gaq.push(['_setAccount', _AnalyticsCode]);
+// _gaq.push(['_trackPageview']);
+// (function () {
+//   var ga = document.createElement('script');
+//   ga.type = 'text/javascript';
+//   ga.async = true;
+//   ga.src = 'https://ssl.google-analytics.com/ga.js';
+//   var s = document.getElementsByTagName('script')[0];
+//   s.parentNode.insertBefore(ga, s);
+// })();
 /**
  * Track a click on a button using the asynchronous tracking API.
  *
  * See http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html
  * for information on how to use the asynchronous tracking API.
  */
-function trackButtonClick(e) {
-  _gaq.push(['_trackEvent', e.target.id, 'clicked']);
-}
+// function trackButtonClick(e) {
+//   _gaq.push(['_trackEvent', e.target.id, 'clicked']);
+// }
 /**
  * Now set up your event handlers for the popup's `button` elements once the
  * popup's DOM has loaded.
@@ -130,8 +130,9 @@ function consultaQualisV2(issn) {
 //função para pegar o data e escrever em uma tabela qualis 2017-2018
 function drawTableV2(data) {
   let table = document.getElementById('outputTableV2');
-  table.innerHTML = '<tr><th colspan=\'2\'>Qualis Preliminar 2019*</th></tr>';
-  table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato\'>Estrato</th></tr>';
+  //table.innerHTML = '<tr><th colspan=\'2\'>Qualis Preliminar 2019*</th></tr>';
+  table.innerHTML = '<tr><th colspan=\'2\'>Quadriênio 2017-2020</th></tr>';
+  table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato\'>Estrato*</th></tr>';
   let nodetr = document.createElement('tr');
   let nodetdarea = document.createElement('td');
   let textnode = '';
@@ -139,7 +140,8 @@ function drawTableV2(data) {
     textnode = document.createTextNode('Área única');
     nodetdarea.appendChild(textnode);
     let nodetdestrato = document.createElement('td');
-    textnode = document.createTextNode(data['data'][0]['estrato'] + '*');
+    //textnode = document.createTextNode(data['data'][0]['estrato'] + '*'); //busca da api o valor real
+    textnode = document.createTextNode('-');//aguardando o estrato oficial
     nodetdestrato.appendChild(textnode);
     nodetr.appendChild(nodetdarea);
     nodetr.appendChild(nodetdestrato);
@@ -160,7 +162,7 @@ function drawTableV2(data) {
   nodetdarea.colSpan = 2;
   textnode = document.createTextNode('');
   nodetdarea.appendChild(textnode);
-  nodetdarea.innerHTML = '* <em>Qualis Preliminar 2019 <strong>não</strong> foi publicado oficialmente pela CAPES.</em>'
+  nodetdarea.innerHTML = '* <em>Estamos aguardando a publicação oficial do Qualis referente ao Quadriênio 2017-2020 pela CAPES.</em>'
   nodetr.appendChild(nodetdarea);
   table.appendChild(nodetr);
 }
@@ -199,31 +201,41 @@ function drawTable(data) {
 }
 
 //Get the selected text and send it to the function
-chrome.tabs.executeScript({
-  code: 'window.getSelection().toString();'
-}, function (selection) {
-  let issn = undefined;
-  if (selection) {
-    issn = selection[0];
-  }
+function getSelecao() {
+  return getSelection().toString();
+}
 
-  if (extractISSN(issn)) {
-    issn = extractISSN(issn)[0];
-    document.getElementById("search-box").value = issn;
-    consultaQualis(issn);
-    consultaQualisV2(issn);
-  } else {
-    document.getElementById('outputTable').innerHTML = '';
-    document.getElementById('outputTableV2').innerHTML = '';
-    document.getElementById('title').innerHTML = '';
-    document.getElementById('titleV2').innerHTML = '';
-    document.getElementById('logoQualis').style.display = 'inline';
-    document.getElementById('footer').style.display = 'flex';
-    document.getElementById('messages').innerHTML = "<i class='fas fa-exclamation-circle'></i> Insira, ou selecione, um número de ISSN válido para realizar a consulta.";
-    document.getElementById('links-dropdown').style.display = 'none';
-    document.getElementById('avisoMsgOnOff').style.display = 'none';
-  }
+chrome.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
+  chrome.scripting.executeScript(
+    {
+      target: { tabId: tab.id },
+      func: getSelecao,
+    }, 
+    (selection) => {
+      let issn = undefined;
+      if (selection) {
+        issn = selection[0].result;
+      }
+
+      if (extractISSN(issn)) {
+        issn = extractISSN(issn)[0];
+        document.getElementById("search-box").value = issn;
+        consultaQualis(issn);
+        consultaQualisV2(issn);
+      } else {
+        document.getElementById('outputTable').innerHTML = '';
+        document.getElementById('outputTableV2').innerHTML = '';
+        document.getElementById('title').innerHTML = '';
+        document.getElementById('titleV2').innerHTML = '';
+        document.getElementById('logoQualis').style.display = 'inline';
+        document.getElementById('footer').style.display = 'flex';
+        document.getElementById('messages').innerHTML = "<i class='fas fa-exclamation-circle'></i> Insira, ou selecione, um número de ISSN válido para realizar a consulta.";
+        document.getElementById('links-dropdown').style.display = 'none';
+        document.getElementById('avisoMsgOnOff').style.display = 'none';
+      }
+    });
 });
+
 /**Regex ISSN Hard*/
 function isISSNHard(issn) {
   //([0-9]{4}-[0-9]{3}[0-9|x]{1})$
@@ -248,7 +260,7 @@ function isISSN(issn) {
 function extractISSN(selection) {
   //[0-9]{4}-[0-9]{3}[0-9|x]{1}
   if (selection) {
-    let str = selection;
+    let str = String(selection);
     let patt = new RegExp('[0-9]{4}-[0-9]{3}[0-9|x]{1}', 'i');
     return str.match(patt);
   } else {
@@ -273,11 +285,12 @@ let searchEngines = [
   {
     nome: "QualisAPIv1",
     url: url + "v1/issn/"
-  },
-  {
-    nome: "QualisAPIv2",
-    url: url + "v2/issn/"
   }
+  // ,
+  // {
+  //   nome: "QualisAPIv2",
+  //   url: url + "v2/issn/"
+  // }
 ]
 
 function createSearchLinks(issn) {

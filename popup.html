@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-eval' http://www.google-analytics.com https://qualisapi.herokuapp.com https://cdnjs.cloudflare.com ;style-src 'self' 'unsafe-inline' http://www.google-analytics.com https://qualisapi.herokuapp.com https://cdnjs.cloudflare.com ; media-src *;img-src *">
+
   <title>Consulta Qualis</title>
   <link rel="stylesheet" href="popup.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
@@ -16,7 +18,7 @@
       <input type='text' id="search-box">
       <button type='submit' id='search-button'><i class="fas fa-search"></i></button>
     </div>
-    <div id="avisoMsgOnOff"><p>Aviso <i class="fas fa-caret-down"></i></p></div>
+    <div id="avisoMsgOnOff"><p>Aviso. <i class="fas fa-caret-down"></i></p></div>
     <div id="links-dropdown">
       <p>Links <i class="fas fa-caret-down"></i></p>
       <div id="dropdown-content">
@@ -24,7 +26,7 @@
         <a id="link-search-bing" class="search-links" target="_blank" title="" href=""></a>
         <a id="link-search-yahoo" class="search-links" target="_blank" title="" href=""></a>
         <a id="link-search-qualis-api-v1" class="search-links" target="_blank" title="" href=""></a>
-        <a id="link-search-qualis-api-v2" class="search-links" target="_blank" title="" href=""></a>
+        <!-- <a id="link-search-qualis-api-v2" class="search-links" target="_blank" title="" href=""></a> -->
       </div>
     </div>
     <div id="content">
@@ -63,7 +65,10 @@
       Desenvolvido com <a id="link-dev-qualis-api" href="http://qualisapi.herokuapp.com" target="_blank">QualisAPI</a>.
     </p>
   </div>
+  <script src="analytics-override.js"></script>
+  <script src="override.js"></script>
   <script src="popup.js"></script>
+  <script src="./ga.js"></script>
 </body>
 
 </html>
