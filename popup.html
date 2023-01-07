@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-eval' http://www.google-analytics.com https://qualisapi.herokuapp.com https://cdnjs.cloudflare.com ;style-src 'self' 'unsafe-inline' http://www.google-analytics.com https://qualisapi.herokuapp.com https://cdnjs.cloudflare.com ; media-src *;img-src *">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' 'unsafe-eval' http://www.google-analytics.com https://qualisapi.herokuapp.com https://cdnjs.cloudflare.com ;style-src 'self' 'unsafe-inline' http://www.google-analytics.com https://qualisapi.herokuapp.com https://cdnjs.cloudflare.com ; media-src *;img-src *">
 
   <title>Consulta Qualis</title>
   <link rel="stylesheet" href="popup.css">
@@ -18,29 +19,30 @@
       <input type='text' id="search-box">
       <button type='submit' id='search-button'><i class="fas fa-search"></i></button>
     </div>
-    <div id="avisoMsgOnOff"><p>Aviso. <i class="fas fa-caret-down"></i></p></div>
+    <!-- <div id="avisoMsgOnOff"><p>Aviso. <i class="fas fa-caret-down"></i></p></div> -->
     <div id="links-dropdown">
       <p>Links <i class="fas fa-caret-down"></i></p>
       <div id="dropdown-content">
         <a id="link-search-google" class="search-links" target="_blank" title="" href=""></a>
         <a id="link-search-bing" class="search-links" target="_blank" title="" href=""></a>
         <a id="link-search-yahoo" class="search-links" target="_blank" title="" href=""></a>
-        <a id="link-search-qualis-api-v1" class="search-links" target="_blank" title="" href=""></a>
+        <!-- <a id="link-search-qualis-api-v1" class="search-links" target="_blank" title="" href=""></a> -->
         <!-- <a id="link-search-qualis-api-v2" class="search-links" target="_blank" title="" href=""></a> -->
       </div>
     </div>
     <div id="content">
-      <div id="avisoQualis2019">
+      <!-- 
+        <div id="avisoQualis2019">
         <div class="avisoIcon"><i title="Aviso importante" class="fas fa-bell"></i></div>
-        <div class="avisoText">A plataforma oficial de consulta do Qualis Periódicos
-          2013-2016 é o sistema <a
+        <div class="avisoText">A plataforma oficial de consulta do Qualis Periódicos é o sistema <a
             href="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf"
             target="_blank">Qualis Periódicos</a> da <a href="https://sucupira.capes.gov.br/" target="_blank">plataforma
             Sucupira</a>.
           <p><input type="checkbox" name="exibirOnOff" id="exibirOnOff"> <em>Não exibir essa mensagem novamente.</em></p>
         </div>
         <div class="fecharAviso"><i class="fas fa-times" id="buttonClose" title="Fechar"></i></div>
-      </div>
+      </div> 
+      -->
       <h2 id="title"></h2>
       <!--Não apagar pois exibe mensagens de erro-->
       <table id="outputTable"></table>
@@ -61,9 +63,11 @@
     <div id="footer">
       <p id="messages">Para encontrar um periódico, insira um número de ISSN.</p>
     </div>
-    <p id="qualisapisource">
+
+    <!-- <p id="qualisapisource">
       Desenvolvido com <a id="link-dev-qualis-api" href="http://qualisapi.herokuapp.com" target="_blank">QualisAPI</a>.
-    </p>
+    </p> -->
+
   </div>
   <script src="analytics-override.js"></script>
   <script src="override.js"></script>

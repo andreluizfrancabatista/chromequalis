@@ -33,6 +33,7 @@
 // function trackButtonClick(e) {
 //   _gaq.push(['_trackEvent', e.target.id, 'clicked']);
 // }
+
 /**
  * Now set up your event handlers for the popup's `button` elements once the
  * popup's DOM has loaded.
@@ -49,8 +50,35 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 /*End of analytics*/
+/**
+ * fetchJSON function
+ */
+async function fetchJSON(url) {
+  var json = [];
 
-let url = 'https://qualisapi.herokuapp.com/api/qualis/';
+  // fetch url
+  const response = await fetch(url);
+
+  // check response status
+  if (response.status === 200) {
+    // get response contents
+    json = await response.json();
+  } else {
+    // log response status code and text
+    console.log(response.status);
+    console.log(response.statusText);
+  }
+
+  return json;
+}
+/**
+* Get path to local json files
+*/
+const path_2022 = 'data/01_qualis_2022.json';
+const capesData_2022 = fetchJSON(path_2022);
+const path_2013 = 'data/01_qualis_2013.json';
+const capesData_2013 = fetchJSON(path_2013);
+
 
 function loading() {
   document.getElementById('loader').style.display = 'inline-block';
@@ -61,60 +89,52 @@ function loading() {
   document.getElementById('titleV2').innerHTML = '';
   document.getElementById('messages').innerHTML = '';
 }
-//Consulta Qualis 2013-2016
+//Consulta Qualis 2017-2020
 function consultaQualis(issn) {
   loading();
   if (issn == null) {
     issn = document.getElementById('search-box').value;
   }
   issn = issn.toUpperCase().trim();
-  let newurl = url + "v1/issn/";
-  fetch(newurl + issn)
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      //if (data['data'][0]) {
-      document.getElementById('search-box').value = issn;
-      document.getElementById('links-dropdown').style.display = 'block';
-      document.getElementById('avisoMsgOnOff').style.display = 'block';
-      if (data['data'][0]) {
-        document.getElementById('title').innerHTML = data['data'][0]['titulo'].toUpperCase();
-      } else {
-        document.getElementById('title').innerHTML = '<em>Título não encontrado</em>';
-      }
-      document.getElementById('footer').style.display = 'none';
-      document.getElementById('messages').innerHTML = '';
-      drawTable(data);
-      createSearchLinks(issn);
-      document.getElementById('loader').style.display = 'none';
-    })
+  capesData_2022.then((result) => {
+    let data = result.filter(el => el.ISSN == issn);
+    document.getElementById('search-box').value = issn;
+    document.getElementById('links-dropdown').style.display = 'block';
+    //document.getElementById('avisoMsgOnOff').style.display = 'block';
+    if (data[0]) {
+      document.getElementById('title').innerHTML = data[0]['Título'].toUpperCase();
+    } else {
+      document.getElementById('title').innerHTML = '<em>Título não encontrado</em>';
+    }
+    document.getElementById('footer').style.display = 'none';
+    document.getElementById('messages').innerHTML = '';
+    drawTable(data, '2017');
+    createSearchLinks(issn);
+    document.getElementById('loader').style.display = 'none';
+  })
     .catch((erro) => {
       let msgErro = '<p>Erro: ' + erro + '</p>';
       document.getElementById('title').innerHTML = msgErro;
       document.getElementById('loader').style.display = 'none';
     });
 }
-//Consulta Qualis 2017-2018
+
+//Consulta Qualis 2013-2016
 function consultaQualisV2(issn) {
   if (issn == null) {
     issn = document.getElementById('search-box').value;
   }
   issn = issn.toUpperCase().trim();
-  let newurl = url + "v2/issn/";
-  fetch(newurl + issn)
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      if (data['data'][0]) {
-        document.getElementById('titleV2').innerHTML = data['data'][0]['titulo'].toUpperCase();
-      } else {
-        document.getElementById('titleV2').innerHTML = '<em>Título não encontrado</em>';
-      }
-      drawTableV2(data);
-      document.getElementById('loader').style.display = 'none';
-    })
+  capesData_2013.then((result) => {
+    let data = result.filter(el => el.ISSN == issn);
+    if (data[0]) {
+      document.getElementById('titleV2').innerHTML = data[0]['Título'].toUpperCase();
+    } else {
+      document.getElementById('titleV2').innerHTML = '<em>Título não encontrado</em>';
+    }
+    drawTable(data, '2013');
+    document.getElementById('loader').style.display = 'none';
+  })
     .catch((erro) => {
       let msgErro = '<p>Erro: ' + erro + '</p>';
       if (!isISSNHard(issn)) {
@@ -127,21 +147,21 @@ function consultaQualisV2(issn) {
 
 }
 
-//função para pegar o data e escrever em uma tabela qualis 2017-2018
+//função para pegar o data e escrever em uma tabela qualis 2017-2020
 function drawTableV2(data) {
   let table = document.getElementById('outputTableV2');
   //table.innerHTML = '<tr><th colspan=\'2\'>Qualis Preliminar 2019*</th></tr>';
-  table.innerHTML = '<tr><th colspan=\'2\'>Quadriênio 2017-2020</th></tr>';
+  table.innerHTML = '<tr><th colspan=\'2\'>Quadriênio 2013-2016</th></tr>';
   table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato\'>Estrato*</th></tr>';
   let nodetr = document.createElement('tr');
   let nodetdarea = document.createElement('td');
   let textnode = '';
-  if (data['data'][0]) {
+  if (data[0]) {
     textnode = document.createTextNode('Área única');
     nodetdarea.appendChild(textnode);
     let nodetdestrato = document.createElement('td');
-    //textnode = document.createTextNode(data['data'][0]['estrato'] + '*'); //busca da api o valor real
-    textnode = document.createTextNode('-');//aguardando o estrato oficial
+    textnode = document.createTextNode(data[0]['Estrato']); //busca o estrato oficial
+    // textnode = document.createTextNode('-');//aguardando o estrato oficial
     nodetdestrato.appendChild(textnode);
     nodetr.appendChild(nodetdarea);
     nodetr.appendChild(nodetdestrato);
@@ -168,19 +188,25 @@ function drawTableV2(data) {
 }
 
 
-//função para pegar o data e escrever em uma tabela qualis 2013-2016
-function drawTable(data) {
-  let table = document.getElementById('outputTable');
-  table.innerHTML = '<tr><th colspan=\'2\'>Quadriênio 2013-2016</th></tr>';
+//função para pegar o data e escrever em uma tabela qualis 2017-2020
+function drawTable(data, ano) {
+  if (ano == '2013') {
+    var table = document.getElementById('outputTableV2');
+    table.innerHTML = '<tr><th colspan=\'2\'>Quadriênio 2013-2016</th></tr>';
+  }
+  if (ano == '2017') {
+    var table = document.getElementById('outputTable');
+    table.innerHTML = '<tr><th colspan=\'2\'>Quadriênio 2017-2020</th></tr>';
+  }
   table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato\'>Estrato</th></tr>';
-  if (data['data'][0]) {
-    Object.keys(data['data']).forEach((itemDoArray, index) => {
+  if (data[0]) {
+    Object.keys(data).forEach((itemDoArray, index) => {
       let nodetr = document.createElement('tr');
       let nodetdarea = document.createElement('td');
       let nodetdestrato = document.createElement('td');
-      let textnode = document.createTextNode(data['data'][index]['area']);
+      let textnode = document.createTextNode(data[index]['Área de Avaliação']);
       nodetdarea.appendChild(textnode);
-      textnode = document.createTextNode(data['data'][index]['estrato']);
+      textnode = document.createTextNode(data[index]['Estrato']);
       nodetdestrato.appendChild(textnode);
       nodetr.appendChild(nodetdarea);
       nodetr.appendChild(nodetdestrato);
@@ -210,7 +236,7 @@ chrome.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
     {
       target: { tabId: tab.id },
       func: getSelecao,
-    }, 
+    },
     (selection) => {
       let issn = undefined;
       if (selection) {
@@ -231,7 +257,7 @@ chrome.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
         document.getElementById('footer').style.display = 'flex';
         document.getElementById('messages').innerHTML = "<i class='fas fa-exclamation-circle'></i> Insira, ou selecione, um número de ISSN válido para realizar a consulta.";
         document.getElementById('links-dropdown').style.display = 'none';
-        document.getElementById('avisoMsgOnOff').style.display = 'none';
+        //document.getElementById('avisoMsgOnOff').style.display = 'none';
       }
     });
 });
@@ -272,20 +298,24 @@ function extractISSN(selection) {
 let searchEngines = [
   {
     nome: "Google",
-    url: "http://www.google.com/search?q=ISSN+"
+    url: "http://www.google.com/search?q=ISSN+",
+    icon: "<i class='fab fa-google'></i>"
   },
   {
     nome: "Bing",
-    url: "https://www.bing.com/search?q=ISSN+"
+    url: "https://www.bing.com/search?q=ISSN+",
+    icon: "<i class='fab fa-b'></i>"
   },
   {
     nome: "Yahoo",
-    url: "https://search.yahoo.com/search?p=ISSN+"
-  },
-  {
-    nome: "QualisAPIv1",
-    url: url + "v1/issn/"
+    url: "https://search.yahoo.com/search?p=ISSN+",
+    icon: "<i class='fab fa-yahoo'></i>"
   }
+  // ,
+  // {
+  //   nome: "QualisAPIv1",
+  //   url: url + "v1/issn/"
+  // }
   // ,
   // {
   //   nome: "QualisAPIv2",
@@ -296,7 +326,7 @@ let searchEngines = [
 function createSearchLinks(issn) {
   let links = document.getElementsByClassName('search-links');
   Object.keys(searchEngines).forEach((item, index) => {
-    links[index].innerHTML = searchEngines[index].nome + ": " + searchEngines[index].url + issn;
+    links[index].innerHTML = searchEngines[index].nome + ": ISSN " + issn;
     if (index < 3) {
       links[index].setAttribute('href', searchEngines[index].url + "\"" + issn + "\"");
       links[index].setAttribute('title', searchEngines[index].url + "\"" + issn + "\"");
@@ -318,22 +348,28 @@ document.addEventListener('DOMContentLoaded', function () {
       chrome.storage.sync.set({ optViewMsg: true }, function () {
         //console.log('Primeiro acesso: Value is set to ' + true);
         let avisoQualis = document.getElementById('avisoQualis2019');
-        avisoQualis.style.display = 'flex';
-        document.getElementById('exibirOnOff').checked = false;
+        if (avisoQualis) {
+          avisoQualis.style.display = 'flex';
+          document.getElementById('exibirOnOff').checked = false;
+        }
       });
     }
     if (result.optViewMsg == true) {
       //Exibe aviso
       let avisoQualis = document.getElementById('avisoQualis2019');
-      avisoQualis.style.display = 'flex';
-      document.getElementById('exibirOnOff').checked = false;
-      chrome.storage.sync.set({ optViewMsg: true }, function () {
-        //console.log('Value is set to ' + true);
-      });
+      if (avisoQualis) {
+        avisoQualis.style.display = 'flex';
+        document.getElementById('exibirOnOff').checked = false;
+        chrome.storage.sync.set({ optViewMsg: true }, function () {
+          //console.log('Value is set to ' + true);
+        });
+      }
     } else {
       //Não exibe aviso
       let avisoQualis = document.getElementById('avisoQualis2019');
-      avisoQualis.style.display = 'none';
+      if (avisoQualis) {
+        avisoQualis.style.display = 'none';
+      }
     }
   });
 
@@ -341,38 +377,42 @@ document.addEventListener('DOMContentLoaded', function () {
    * Botão Aviso para exibir o aviso
    */
   let btn3 = document.getElementById('avisoMsgOnOff');
-  btn3.addEventListener('click', function () {
-    let avisoQualis = document.getElementById('avisoQualis2019');
-    avisoQualis.style.display = 'flex';
-    document.getElementById('exibirOnOff').checked = false;
-    chrome.storage.sync.set({ optViewMsg: true }, function () {
-      //console.log('Value is set to ' + true);
+  if (btn3) {
+    btn3.addEventListener('click', function () {
+      let avisoQualis = document.getElementById('avisoQualis2019');
+      avisoQualis.style.display = 'flex';
+      document.getElementById('exibirOnOff').checked = false;
+      chrome.storage.sync.set({ optViewMsg: true }, function () {
+        //console.log('Value is set to ' + true);
+      });
     });
-  })
+  }
 
   /**
    * Botão fechar do aviso
    */
   let btn2 = document.getElementById('buttonClose');
-  btn2.addEventListener('click', function () {
-    let avisoQualis = document.getElementById('avisoQualis2019');
-    avisoQualis.style.display = 'none';
-    /**
-     * Checa se o usuário marcou a checkbox para não ver a mensagem novamente
-     */
-    let exibirOnOff = document.getElementById('exibirOnOff').checked;
-    if (exibirOnOff) {
-      //Não exibir mais
-      chrome.storage.sync.set({ optViewMsg: false }, function () {
-        //console.log('Value is set to ' + false);
-      });
-    } else {
-      //Pode exibir novamente
-      chrome.storage.sync.set({ optViewMsg: true }, function () {
-        //console.log('Value is set to ' + true);
-      });
-    }
-  });
+  if (btn2) {
+    btn2.addEventListener('click', function () {
+      let avisoQualis = document.getElementById('avisoQualis2019');
+      avisoQualis.style.display = 'none';
+      /**
+       * Checa se o usuário marcou a checkbox para não ver a mensagem novamente
+       */
+      let exibirOnOff = document.getElementById('exibirOnOff').checked;
+      if (exibirOnOff) {
+        //Não exibir mais
+        chrome.storage.sync.set({ optViewMsg: false }, function () {
+          //console.log('Value is set to ' + false);
+        });
+      } else {
+        //Pode exibir novamente
+        chrome.storage.sync.set({ optViewMsg: true }, function () {
+          //console.log('Value is set to ' + true);
+        });
+      }
+    });
+  }
 
   /**
    * Botão de buscar por ISSN
@@ -389,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('footer').style.display = 'flex';
       document.getElementById('messages').innerHTML = 'Para encontrar um periódico, insira um número de ISSN.';
       document.getElementById('links-dropdown').style.display = 'none';
-      document.getElementById('avisoMsgOnOff').style.display = 'none';
+      //document.getElementById('avisoMsgOnOff').style.display = 'none';
     } else if (!isISSNHard(issn)) {
       document.getElementById('outputTable').innerHTML = '';
       document.getElementById('outputTableV2').innerHTML = '';
@@ -399,7 +439,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('footer').style.display = 'flex';
       document.getElementById('messages').innerHTML = "<i class='fas fa-exclamation-circle'></i> Insira, ou selecione, um número de ISSN válido para realizar a consulta.";
       document.getElementById('links-dropdown').style.display = 'none';
-      document.getElementById('avisoMsgOnOff').style.display = 'none';
+      //document.getElementById('avisoMsgOnOff').style.display = 'none';
       document.getElementById('search-box').value = issn;
     } else {
       consultaQualis(issn);
