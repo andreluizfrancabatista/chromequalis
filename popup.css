@@ -3,11 +3,14 @@
   box-sizing: border-box;
   margin: 0;
 }
-div#container{
+
+div#container {
   width: 350px;
   text-align: center;
 }
-div#search, div#footer{
+
+div#search,
+div#footer {
   width: 100%;
   background-color: #f8f8f8;
   height: 50px;
@@ -15,19 +18,23 @@ div#search, div#footer{
   align-items: center;
   justify-content: center;
 }
+
+/*
 div#footer{
   margin-bottom: 20px;
 }
-p#qualisapisource{
+*/
+p#qualisapisource {
   width: 100%;
-  background-color: #f8f8f8;  
+  background-color: #f8f8f8;
   padding: 5px 0px;
   position: fixed;
   left: 0;
   bottom: 0;
   text-align: center;
 }
-div#avisoQualis2019{
+
+div#avisoQualis2019 {
   background-color: #ffd17a;
   overflow: hidden;
   display: flex;
@@ -36,57 +43,67 @@ div#avisoQualis2019{
   border-radius: 5px;
   padding: 0px;
 }
-.avisoIcon{
+
+.avisoIcon {
   width: 5%;
   float: left;
   text-align: center;
   padding: 0px;
   margin: 0 auto;
 }
-.avisoText{
+
+.avisoText {
   width: 80%;
   float: left;
   text-align: center;
   padding: 5px 0px;
 }
-.fecharAviso{
+
+.fecharAviso {
   text-align: center;
   width: 10%;
 }
-#buttonClose{
+
+#buttonClose {
   color: #808080;
   cursor: pointer;
 }
-#buttonClose:hover{
+
+#buttonClose:hover {
   color: #000;
 }
-div#avisoMsgOnOff{
-  
+
+div#avisoMsgOnOff {
+
   width: 50%;
   float: left;
   text-align: left;
   padding-left: 10px;
 }
-div#avisoMsgOnOff:hover{
+
+div#avisoMsgOnOff:hover {
   cursor: pointer;
 }
+
 /*Links*/
-div#links-dropdown{
+div#links-dropdown {
   display: none;
   width: 50%;
   float: right;
   text-align: right;
   padding-right: 10px;
-  
+
 }
-div#dropdown-content{
+
+div#dropdown-content {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
+
 /* Links inside the dropdown */
 #dropdown-content a {
   color: black;
@@ -98,48 +115,60 @@ div#dropdown-content{
   text-overflow: ellipsis;
   width: 160px;
 }
+
 #links-dropdown:hover #dropdown-content {
   display: block;
 }
-#dropdown-content a:hover{
+
+#dropdown-content a:hover {
   background-color: #fdfefe;
 }
+
 /*end of links*/
 
-div#content{
+div#content {
   width: 100%;
   padding: 20px 10px 10px 10px;
 }
+
 /*table, tr, td, th{
   border-collapse: collapse;
   border: 1px solid black;
 }*/
-table{
+table {
   margin-top: 20px;
   margin-bottom: 30px;
   width: 100%;
 }
-th{
+
+th {
   background-color: #2980b9;
   color: #fff;
   font-weight: bold;
   padding: 5px 10px;
 }
-th.colunaEstrato{
+
+th.colunaEstrato {
   width: 20%;
 }
-tr:nth-child(even) { /*ímpar*/
+
+tr:nth-child(even) {
+  /*ímpar*/
   background-color: #fdfefe;
 }
-tr:nth-child(odd) { /*par*/
+
+tr:nth-child(odd) {
+  /*par*/
   background-color: #f4f6f6;
 }
+
 /*CSS da extensão do Google Acadêmico*/
 #search-box:hover {
   border: 1px solid #b9b9b9;
   border-top: 1px solid #a0a0a0;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, .1);
 }
+
 #search-box {
   vertical-align: top;
   box-sizing: border-box;
@@ -157,11 +186,13 @@ tr:nth-child(odd) { /*par*/
   border-radius: 2px 0 0 2px;
   text-align: center;
 }
+
 #search-button:active {
   border: 1px solid #315da3;
   background-color: #2f6de1;
   background-image: linear-gradient(to bottom, #4d90fe, #2f6de1);
 }
+
 #search-button:hover {
   border: 1px solid #2f5bb7;
   background-color: #357ae8;
@@ -169,6 +200,7 @@ tr:nth-child(odd) { /*par*/
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, .1);
   transition: all 0s;
 }
+
 #search-button {
   text-align: center;
   box-sizing: border-box;
@@ -184,23 +216,60 @@ tr:nth-child(odd) { /*par*/
   -moz-user-select: none;
   color: #f2f2f2;
 }
+
+.colunaEstrato2 {
+  display: none;
+  color: dimgray;
+}
+
+.colunaEstrato2-show {
+  display: inline;
+}
+
+#comparativo {
+  cursor: pointer;
+}
+
+#titleV2,
+#outputTableV2 {
+  display: none;
+}
+
 /*End CSS extensão Google Academico*/
 
 @keyframes bubble {
-  0%   { transform:scale(0.5); opacity:0.0; }
-  50%  { transform:scale(1.2); opacity:0.5; }
-  100% { transform:scale(1.0); opacity:1.0; }
+  0% {
+    transform: scale(0.5);
+    opacity: 0.0;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1.0);
+    opacity: 1.0;
+  }
 }
 
 @keyframes rotates {
-  0%   { transform:rotate(45deg); opacity:0.0; }
+  0% {
+    transform: rotate(45deg);
+    opacity: 0.0;
+  }
+
   /*50%  { transform:rotate(20deg); opacity:0.5; }*/
-  100% { transform:rotate(0deg); opacity:1.0; }
+  100% {
+    transform: rotate(0deg);
+    opacity: 1.0;
+  }
 }
 
-img#logoQualis{
+img#logoQualis {
   animation-name: bubble;
   animation-duration: 2.0s;
   animation-fill-mode: forwards;
+  margin-bottom: 20%;
 }
-
