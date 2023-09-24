@@ -38,17 +38,17 @@
  * Now set up your event handlers for the popup's `button` elements once the
  * popup's DOM has loaded.
  */
-document.addEventListener('DOMContentLoaded', function () {
-  var buttons = document.querySelectorAll('button');
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', trackButtonClick);
-  }
-  //to track links clicked
-  var links = document.querySelectorAll('a');
-  for (var i = 0; i < links.length; i++) {
-    links[i].addEventListener('click', trackButtonClick);
-  }
-});
+// document.addEventListener('DOMContentLoaded', function () {
+//   var buttons = document.querySelectorAll('button');
+//   for (var i = 0; i < buttons.length; i++) {
+//     buttons[i].addEventListener('click', trackButtonClick);
+//   }
+//   //to track links clicked
+//   var links = document.querySelectorAll('a');
+//   for (var i = 0; i < links.length; i++) {
+//     links[i].addEventListener('click', trackButtonClick);
+//   }
+// });
 /*End of analytics*/
 
 /**
@@ -118,6 +118,7 @@ function consultaQualis(issn) {
     document.getElementById('footer').style.display = 'none';
     document.getElementById('messages').innerHTML = '';
     drawTable(data0, data1);
+    //drawTableV2(data0);
     createSearchLinks(issn);
     document.getElementById('loader').style.display = 'none';
   })
@@ -142,7 +143,7 @@ function consultaQualisV2(issn) {
     } else {
       document.getElementById('titleV2').innerHTML = '<em>Título não encontrado</em>';
     }
-    //drawTableV2(data);
+    drawTableV2(data);
     document.getElementById('loader').style.display = 'none';
   })
     .catch((erro) => {
@@ -158,24 +159,36 @@ function consultaQualisV2(issn) {
 }
 
 //função para pegar o data e escrever em uma tabela qualis 2017-2020
-function drawTableV2(data) {
+function drawTableV2(data0) {
   let table = document.getElementById('outputTableV2');
   //table.innerHTML = '<tr><th colspan=\'2\'>Qualis Preliminar 2019*</th></tr>';
   table.innerHTML = '<tr><th colspan=\'2\'>Quadriênio 2013-2016</th></tr>';
-  table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato\'>Estrato*</th></tr>';
+  table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato\'>Estrato</th></tr>';
   let nodetr = document.createElement('tr');
   let nodetdarea = document.createElement('td');
   let textnode = '';
-  if (data[0]) {
-    textnode = document.createTextNode('Área única');
-    nodetdarea.appendChild(textnode);
-    let nodetdestrato = document.createElement('td');
-    textnode = document.createTextNode(data[0]['Estrato']); //busca o estrato oficial
-    // textnode = document.createTextNode('-');//aguardando o estrato oficial
-    nodetdestrato.appendChild(textnode);
-    nodetr.appendChild(nodetdarea);
-    nodetr.appendChild(nodetdestrato);
-    table.appendChild(nodetr);
+  if (data0[0]) {
+    Object.keys(data0).forEach((itemDoArray, index0) => {
+      let nodetr = document.createElement('tr');
+      let nodetdarea = document.createElement('td');
+      let nodetdestrato1 = document.createElement('td');
+      let nodetdestrato2 = document.createElement('td');
+      let nodespanestrato = document.createElement('span');
+      var textnode = document.createTextNode(data0[index0]['Área de Avaliação']);
+      nodetdarea.appendChild(textnode);
+      textnode = document.createTextNode(data0[index0]['Estrato']);
+      nodetdestrato1.appendChild(textnode);
+      textnode = document.createTextNode(' - ');
+      nodespanestrato.innerHTML = " ( " + textnode.wholeText.trim() + " )";
+      nodespanestrato.classList.add('colunaEstrato2');
+      nodetdestrato1.appendChild(nodespanestrato);
+      nodetdestrato2.appendChild(textnode);
+      nodetdestrato2.classList.add('colunaEstrato2');
+      nodetr.appendChild(nodetdarea);
+      nodetr.appendChild(nodetdestrato1);
+      //nodetr.appendChild(nodetdestrato2); insere a terceira coluna
+      table.appendChild(nodetr);
+    });
   } else {
     nodetdarea.colSpan = 2;
     textnode = document.createTextNode('');
@@ -186,35 +199,26 @@ function drawTableV2(data) {
     nodetdarea.style.paddingBottom = '10px';
     table.appendChild(nodetr);
   }
-  //Info sobre Qualis 2019
-  nodetr = document.createElement('tr');
-  nodetdarea = document.createElement('td');
-  nodetdarea.colSpan = 2;
-  textnode = document.createTextNode('');
-  nodetdarea.appendChild(textnode);
-  nodetdarea.innerHTML = '* <em>Estamos aguardando a publicação oficial do Qualis referente ao Quadriênio 2017-2020 pela CAPES.</em>'
-  nodetr.appendChild(nodetdarea);
-  table.appendChild(nodetr);
 }
 
 
 //função para pegar o data e escrever em uma tabela qualis 2017-2020
 function drawTable(data0, data1) {
   let table = document.getElementById('outputTable');
-  table.innerHTML = '';
-  //table.innerHTML = '<tr><th colspan=\'3\'>Quadriênio 2017-2020</th></tr>';
+  //table.innerHTML = '';
+  table.innerHTML = '<tr><th colspan=\'3\'>Quadriênio 2017-2020</th></tr>';
   //table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato1\'>Estrato<br>2017-2020</th><th class=\'colunaEstrato2\'>Estrato<br>2013-2016</th></tr>';
-  table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato1\'>Estrato<br>atual<br>(anterior)</th></tr>';
+  //table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato1\'>Estrato<br>atual<br>(anterior)</th></tr>';
+  table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato1\'>Estrato</th></tr>';
   if (data0[0]) {
-    let comparativo = document.getElementById('comparativo');
-    comparativo.innerHTML = "Abrir comparação com Qualis anterior";
+    // let comparativo = document.getElementById('comparativo');
+    // comparativo.innerHTML = "Abrir comparação com Qualis anterior";
     Object.keys(data0).forEach((itemDoArray, index0) => {
       let nodetr = document.createElement('tr');
       let nodetdarea = document.createElement('td');
       let nodetdestrato1 = document.createElement('td');
       let nodetdestrato2 = document.createElement('td');
       let nodespanestrato = document.createElement('span');
-
       var textnode = document.createTextNode(data0[index0]['Área de Avaliação']);
       nodetdarea.appendChild(textnode);
       textnode = document.createTextNode(data0[index0]['Estrato']);
@@ -231,7 +235,6 @@ function drawTable(data0, data1) {
       nodespanestrato.innerHTML = " ( " + textnode.wholeText.trim() + " )";
       nodespanestrato.classList.add('colunaEstrato2');
       nodetdestrato1.appendChild(nodespanestrato);
-
       nodetdestrato2.appendChild(textnode);
       nodetdestrato2.classList.add('colunaEstrato2');
       nodetr.appendChild(nodetdarea);
@@ -240,30 +243,24 @@ function drawTable(data0, data1) {
       table.appendChild(nodetr);
     });
   } else if (data1[0]){
-    let comparativo = document.getElementById('comparativo');
-    comparativo.innerHTML = "Abrir comparação com Qualis anterior";
+    // let comparativo = document.getElementById('comparativo');
+    // comparativo.innerHTML = "Abrir comparação com Qualis anterior";
     Object.keys(data1).forEach((itemDoArray, index1) => {
       let nodetr = document.createElement('tr');
       let nodetdarea = document.createElement('td');
       let nodetdestrato1 = document.createElement('td');
       let nodetdestrato2 = document.createElement('td');
       let nodespanestrato = document.createElement('span');
-
       var textnode = document.createTextNode(data1[index1]['Área de Avaliação']);
       nodetdarea.appendChild(textnode);
-
       textnode = document.createTextNode(' - ');
       nodetdestrato1.appendChild(textnode);
-
       textnode = document.createTextNode(data1[index1]['Estrato']);
       nodespanestrato.innerHTML = " ( " + textnode.wholeText.trim() + " )";
       nodespanestrato.classList.add('colunaEstrato2');
       nodetdestrato1.appendChild(nodespanestrato);
-      
-
       nodetdestrato2.appendChild(textnode);
       nodetdestrato2.classList.add('colunaEstrato2');
-      
       nodetr.appendChild(nodetdarea);
       nodetr.appendChild(nodetdestrato1);
       //nodetr.appendChild(nodetdestrato2);
@@ -273,7 +270,7 @@ function drawTable(data0, data1) {
   } else {
     let nodetr = document.createElement('tr');
     let nodetdarea = document.createElement('td');
-    nodetdarea.colSpan = 3;
+    nodetdarea.colSpan = 2;
     nodetdarea.style.paddingTop = '10px';
     nodetdarea.style.paddingBottom = '10px';
     let textnode = document.createTextNode('');
@@ -306,7 +303,7 @@ chrome.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
         issn = extractISSN(issn)[0];
         document.getElementById("search-box").value = issn;
         consultaQualis(issn);
-        //consultaQualisV2(issn);
+        consultaQualisV2(issn);
       } else {
         document.getElementById('outputTable').innerHTML = '';
         document.getElementById('outputTableV2').innerHTML = '';
@@ -314,7 +311,7 @@ chrome.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
         document.getElementById('titleV2').innerHTML = '';
         document.getElementById('logoQualis').style.display = 'inline';
         document.getElementById('footer').style.display = 'flex';
-        document.getElementById('messages').innerHTML = "<i class='fas fa-exclamation-circle'></i> Insira, ou selecione, um número de ISSN válido para realizar a consulta.";
+        document.getElementById('messages').innerHTML = "<i class='fas fa-exclamation-circle'></i> Insira, ou selecione, um número de ISSN válido para realizar a consulta!";
         document.getElementById('links-dropdown').style.display = 'none';
         document.getElementById('comparativo').innerHTML = '';
         //document.getElementById('avisoMsgOnOff').style.display = 'none';
@@ -371,16 +368,6 @@ let searchEngines = [
     url: "https://search.yahoo.com/search?p=ISSN+",
     icon: "<i class='fab fa-yahoo'></i>"
   }
-  // ,
-  // {
-  //   nome: "QualisAPIv1",
-  //   url: url + "v1/issn/"
-  // }
-  // ,
-  // {
-  //   nome: "QualisAPIv2",
-  //   url: url + "v2/issn/"
-  // }
 ]
 
 function createSearchLinks(issn) {
@@ -526,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('search-box').value = issn;
     } else {
       consultaQualis(issn);
-      //consultaQualisV2(issn);
+      consultaQualisV2(issn);
     }
 
     /**

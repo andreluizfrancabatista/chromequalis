@@ -230,10 +230,10 @@ tr:nth-child(odd) {
   cursor: pointer;
 }
 
-#titleV2,
+/* #titleV2,
 #outputTableV2 {
   display: none;
-}
+} */
 
 /*End CSS extensão Google Academico*/
 
