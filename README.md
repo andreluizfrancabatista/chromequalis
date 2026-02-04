@@ -18,7 +18,7 @@ b) Clique no botão da extensão, digite o número de ISSN no campo de busca e c
 ##### NOVIDADES:
 - Versão 3.4:
 a) Adicionado a consulta do Qualis referente ao Quadriênio 2021-2024 com base nos dados disponíveis no site oficial da plataforma Sucupira.
-b) Removido do Qualis 2013-2016
+b) Removido os estratos do Qualis 2013-2016.
 - Versão 3.0:
 a) Adicionado a consulta do Qualis referente ao Quadriênio 2017-2020 com base nos dados disponíveis no site oficial da plataforma Sucupira.
 b) Removidos os avisos iniciais.
