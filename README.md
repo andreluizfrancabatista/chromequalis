@@ -8,7 +8,7 @@
 - O desenvolvimento desta extensão (e também de sua API) foi feito de forma independente, ou seja, não houve parcerias com a CAPES ou outra agência governamental. A plataforma oficial de consulta do Qualis Periódicos é o sistema Qualis Periódicos da plataforma Sucupira.
 
 ##### DESCRIÇÃO:
-- Com a extensão Chrome Qualis você pode consultar a classificação de periódicos diretamente pelo navegador Google Chrome. As consultas disponíveis são para as classificações de periódicos segundo os estratos da Capes dos Quadriênios 2017-2020 e 2013-2016.
+- Com a extensão Chrome Qualis você pode consultar a classificação de periódicos diretamente pelo navegador Google Chrome. As consultas disponíveis são para as classificações de periódicos segundo os estratos da Capes dos Quadriênios 2021-2024 e 2017-2020.
 
 ##### COMO UTILIZAR:
 - Há duas formas de utilizar a extensão:
@@ -16,6 +16,9 @@ a) Selecione o número de ISSN do periódico a ser consultado, e clique no botã
 b) Clique no botão da extensão, digite o número de ISSN no campo de busca e clique na lupa.
 
 ##### NOVIDADES:
+- Versão 3.4:
+a) Adicionado a consulta do Qualis referente ao Quadriênio 2021-2024 com base nos dados disponíveis no site oficial da plataforma Sucupira.
+b) Removido do Qualis 2013-2016
 - Versão 3.0:
 a) Adicionado a consulta do Qualis referente ao Quadriênio 2017-2020 com base nos dados disponíveis no site oficial da plataforma Sucupira.
 b) Removidos os avisos iniciais.

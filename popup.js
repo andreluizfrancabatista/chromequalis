@@ -75,10 +75,12 @@ async function fetchJSON(url) {
 /**
 * Get path to local json files
 */
+const path_2026 = 'data/01_qualis_2026.json';
+const capesData_2026 = fetchJSON(path_2026);
 const path_2022 = 'data/01_qualis_2022.json';
 const capesData_2022 = fetchJSON(path_2022);
-const path_2013 = 'data/01_qualis_2013.json';
-const capesData_2013 = fetchJSON(path_2013);
+//const path_2013 = 'data/01_qualis_2013.json'; /* removido em Janeiro de 2026 */
+//const capesData_2013 = fetchJSON(path_2013); /* removido em Janeiro de 2026 */
 
 
 function loading() {
@@ -100,9 +102,9 @@ function consultaQualis(issn) {
   issn = issn.toUpperCase().trim();
 
   //Dealing with multiple promises
-  Promise.all([capesData_2022, capesData_2013]).then((result) => {
+  Promise.all([capesData_2022, capesData_2026]).then((result) => {
     let data0 = result[0].filter(el => el.ISSN == issn); // Qualis 2022
-    let data1 = result[1].filter(el => el.ISSN == issn); // Qualis 2013
+    let data1 = result[1].filter(el => el.ISSN == issn); // Qualis 2026
     console.table(data0);
     console.table(data1);
     document.getElementById('search-box').value = issn;
@@ -131,12 +133,13 @@ function consultaQualis(issn) {
 }
 
 //Consulta Qualis 2013-2016
+//Consulta Qualis 2021-2024
 function consultaQualisV2(issn) {
   if (issn == null) {
     issn = document.getElementById('search-box').value;
   }
   issn = issn.toUpperCase().trim();
-  capesData_2013.then((result) => {
+  capesData_2026.then((result) => {
     let data = result.filter(el => el.ISSN == issn);
     if (data[0]) {
       document.getElementById('titleV2').innerHTML = data[0]['Título'].toUpperCase();
@@ -162,7 +165,7 @@ function consultaQualisV2(issn) {
 function drawTableV2(data0) {
   let table = document.getElementById('outputTableV2');
   //table.innerHTML = '<tr><th colspan=\'2\'>Qualis Preliminar 2019*</th></tr>';
-  table.innerHTML = '<tr><th colspan=\'2\'>Quadriênio 2013-2016</th></tr>';
+  table.innerHTML = '<tr><th colspan=\'2\'>Quadriênio 2021-2024</th></tr>';
   table.innerHTML += '<tr><th>Área</th><th class=\'colunaEstrato\'>Estrato</th></tr>';
   let nodetr = document.createElement('tr');
   let nodetdarea = document.createElement('td');
